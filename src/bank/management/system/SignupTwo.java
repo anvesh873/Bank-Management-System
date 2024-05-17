@@ -5,18 +5,22 @@ package bank.management.system;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignupTwo extends JFrame implements ActionListener
 {
    
-    JTextField mobile,aadhar;
+    JTextField span,aadhar;
     JButton next;
     JRadioButton syes,sno,eyes,eno;
     JComboBox religion,category,occupation,income,education;
     String formno;
-      
+     
 
+    private static final String PAN_REGEX = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
+    private static final Pattern PAN_PATTERN = Pattern.compile(PAN_REGEX);
+    
     SignupTwo(String formno){
         
         this.formno=formno;        
@@ -95,15 +99,15 @@ public class SignupTwo extends JFrame implements ActionListener
         
         
         
-        JLabel phoneno=new JLabel("Mobile Number:");
-        phoneno.setFont(new Font("Raleway",Font.BOLD,22));
-        phoneno.setBounds(100,440,200,30);
-        add(phoneno);
+        JLabel pan=new JLabel("PAN Number:");
+        pan.setFont(new Font("Raleway",Font.BOLD,22));
+        pan.setBounds(100,440,200,30);
+        add(pan);
         
-        mobile =new JTextField();
-        mobile.setFont(new Font("Raleway",Font.BOLD,14));
-        mobile.setBounds(300,440,400,30);
-        add(mobile);
+        span =new JTextField();
+        span.setFont(new Font("Raleway",Font.BOLD,14));
+        span.setBounds(300,440,400,30);
+        add(span);
         
         JLabel jaadhar=new JLabel("Aadhar Number:");
         jaadhar.setFont(new Font("Raleway",Font.BOLD,22));
@@ -192,7 +196,7 @@ public class SignupTwo extends JFrame implements ActionListener
             exisitingaccount="No";
         }
         
-        String phoneno=mobile.getText();
+        String pan=span.getText();
         String saadhar=aadhar.getText();
         if(sreligion.equals("Null")){
             JOptionPane.showMessageDialog(null,"Select your Religion");
@@ -204,11 +208,11 @@ public class SignupTwo extends JFrame implements ActionListener
             JOptionPane.showMessageDialog(null,"Select your Education");
         }else if(soccupation.equals("Null")){
             JOptionPane.showMessageDialog(null,"Select your Occupation");
-        }else if(phoneno.equals("") || phoneno.length()!=10 || !phoneno.matches("\\d{10}")){
-            if(phoneno.equals(""))
-                JOptionPane.showMessageDialog(null,"Mobile no is Required");
+        }else if(!validatepan(pan)){
+            if(pan.equals(""))
+                JOptionPane.showMessageDialog(null,"PAN no is Required");
             else
-                JOptionPane.showMessageDialog(null,"Enter valid Mobile No");
+                JOptionPane.showMessageDialog(null,"Enter valid PAN No");
         }else if(saadhar.equals("") || saadhar.length()!=12 || !saadhar.matches("\\d{12}")){
             if(saadhar.equals(""))
                 JOptionPane.showMessageDialog(null,"Aadhar No is Required");
@@ -238,6 +242,13 @@ public class SignupTwo extends JFrame implements ActionListener
     }
 
  
+    public static boolean validatepan(String panNumber){
+         if (panNumber == null) {
+            return false;
+        }
+        Matcher matcher = PAN_PATTERN.matcher(panNumber);
+        return matcher.matches();
+    }
    
     public static void main(String args[]) {
         
